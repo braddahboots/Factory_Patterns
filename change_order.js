@@ -13,9 +13,6 @@ function Automobile(type, model, make, color) {
 }
 
 function Car(model, make, color) {
-  this.model = Toyota;
-  this.make = Corrola;
-  this.color = White;
   Automobile.call(this, type, model, make, color);
 }
 
@@ -26,9 +23,6 @@ Car.prototype = Object.create(Automobile.prototype, {
 });
 
 function Truck(model, make, color) {
-  this.model = Toyota;
-  this.make = Tacoma;
-  this.color = White;
   Automobile.call(this, type, model, make, color);
 }
 
@@ -39,9 +33,6 @@ Truck.prototype = Object.create(Automobile.prototype, {
 });
 
 function Minivan(model, make, color) {
-  this.model = Toyota;
-  this.make = Odyssey;
-  this.color = White;
   Automobile.call(this, type, model, make, color);
 }
 
@@ -51,18 +42,22 @@ Minivan.prototype = Object.prototype(Automobile.prototype, {
   }
 });
 
-Automobile.prototype.request = function(type, options) {
+Automobile.request = function(type, options) { // Orginally had Automobile.prototype.request, but removed to set a static
+  if(!options.model || !options.make || !options.color){
+    throw new Error('Invalid');
+  }
+
   if( type.toLowerCase() === 'car' ) {
-    if(options.model && options.make && options.model) {
-        return new Car(options.model, options.make, options.model);
+    return new Car(options.model, options.make, options.color);
       }
-    } else if( type.toLowerCase() === 'truck' ) {
-        if(options.model && options.make && options.model) {
-          return new Truck(options.model && options.make && options.model);
+
+  if( type.toLowerCase() === 'truck' ) {
+    return new Truck(options.model && options.make && options.color);
         }
-    } else if( type.toLowerCase() === 'minivan' ) {
-        if(options.model && options.make && options.model) {
-          return new Minivan(options.model && options.make && options.model);
+
+  if( type.toLowerCase() === 'minivan' ) {
+    return new Minivan(options.model && options.make && options.color);
         }
-    }
+
+    throw new Error('Invalid input request');
 };
